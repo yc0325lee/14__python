@@ -1,0 +1,17 @@
+# vim: ft=text ts=4 sw=4 tw=999 expandtab
+# ----------------------------------------------------------------------------
+# File : input.txt
+# Author : yc0325lee
+# Created : 2022-03-06 00:21:04 by lee2103
+# Modified : 2022-03-06 00:21:04 by lee2103
+# Description : 
+# ----------------------------------------------------------------------------
+out of order = broken or not working properly pull up = to stop, especially for
+a short time The cap of a bottle is its lid.  Unleaded fuel contains a smaller
+amount of lead than most fuels so that it produces fewer harmful substances when
+it is burned.  The nozzle of a hose or pipe is a narrow piece fitted to the end
+to control the flow of liquid or gas.  A receipt is a piece of paper that you
+get from someone as proof that they have received money or goods from you.
+squeegee = an implement with a rubber blade used for wiping away surplus water
+from a surface, such as a windowpane If you wipe dirt or liquid from something,
+you remove it, for example by using a cloth or your hand.
