@@ -5,6 +5,9 @@ __pycache__/
 *.out
 *.pkl
 *.png
+*.PNG
+*.jpg
+*.JPG
 *.csv
 *.json
 *.xlsx

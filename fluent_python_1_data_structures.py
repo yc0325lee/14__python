@@ -5,7 +5,7 @@
 # - file : fluent_python_2_data_structures.py
 # - author : yc0325lee
 # - created : 2022-10-16 00:14:54 by lee2103
-# - modified : 2022-10-16 00:14:54 by lee2103
+# - modified : 2023-06-11 23:40:14 by yc032
 # - description : 
 # 1. the python data model
 # 2. an array of sequences
@@ -2795,11 +2795,11 @@ if False:
     # -> this works! but poor readability!
 
 
-if False:
+if True:
     # -------------------------------------
     # - typing.NamedTuple details
     # ; typed version of collections.namedtuple().
-    # ; nothing different except for __annotations__
+    # ; nothing different from collections.namedtuple except for __annotations__
     #   (class attribute, ignored during runtime)
     # ; type hints - PEP 484
     #   (1) no runtime effect
@@ -2821,27 +2821,30 @@ if False:
     print(Coordinate.__annotations__)
     print(Coordinate.lat)
     print(Coordinate.lon)
+    print(Coordinate.reference)
     # Coordinate(lat, lon, reference)
     # {'lat': <class 'float'>, 'lon': <class 'float'>, 'reference': <class 'str'>}
-    # _tuplegetter(0, 'Alias for field number 0')
-    # _tuplegetter(1, 'Alias for field number 1')
+    # _tuplegetter(0, 'Alias for field number 0') |
+    # _tuplegetter(1, 'Alias for field number 1') |
+    # _tuplegetter(2, 'Alias for field number 2') +--> property getter for
+    #                                                  read-only attributes
 
 
     moscow = Coordinate(55.76, 37.62)
-    print(id(moscow), moscow) # 55.8°N, 37.6°E, wsg84
+    print(id(moscow), moscow, sep=', ') # 1836726154912, 55.8°N, 37.6°E, wsg84
 
     somewhere = Coordinate(55.76, 37.62)
-    print(id(somewhere), somewhere) # 55.8°N, 37.6°E, wsg84
+    print(id(somewhere), somewhere, sep=', ') # 1836726154992, 55.8°N, 37.6°E, wsg84
 
     wrong = Coordinate(55.76, 37.62, 44.53)
-    print(id(wrong), wrong)
-    # 1769586160992 55.8°N, 37.6°E, 44.53
-    #                               --+--
-    #                                 |
-    #                                 no type check!
+    print(id(wrong), wrong, sep=', ')
+    # 1836726155072, 55.8°N, 37.6°E, 44.53
+    #                                --+--
+    #                                  |
+    #                                  no type check!
 
     print("somewhere is moscow:", somewhere is moscow) # False
-    print("somewhere == moscow:", somewhere == moscow) # True
+    print("somewhere == moscow:", somewhere == moscow) # True, __eq__ supported
 
     print(issubclass(Coordinate, tuple)) # True
     print(issubclass(Coordinate, dict)) # False -> not a mapping type
