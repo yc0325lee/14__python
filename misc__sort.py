@@ -9,7 +9,7 @@
 # - references
 # ; 3.10.8 Documentation > Python HOWTOs > Sorting HOW TO
 # ----------------------------------------------------------------------------
-import sys
+import os, os.path, sys
 import random
 from utilities import printv
 
@@ -48,7 +48,7 @@ if False:
     insort(num, 30)
 
 
-if True:
+if False:
     # sorting with priorities
     class Person:
         def __init__(self, name, age, sex, blood):
@@ -95,3 +95,34 @@ if True:
     print('\n# sort by blood & age')
     for guest in sorted(guests, key=lambda p: (p.blood, p.age)):
         print(guest)
+
+
+if True:
+    junk = '''
+RuleName TxFlop  RxFlop  ClockDomains Location   Info
+-------- ------- ------- ------------ ---------- ----------------
+W_DATA:  TxFlop0 RxFlop9 CLK1::CLK2   Location-0 105/1000 (10.5%)
+W_DATA:  TxFlop1 RxFlop8 CLK1::CLK2   Location-1 965/1000 (96.5%)
+W_DATA:  TxFlop2 RxFlop7 CLK1::CLK2   Location-2 972/1000 (97.2%)
+W_DATA:  TxFlop3 RxFlop6 CLK1::CLK2   Location-3 978/1000 (97.8%)
+W_DATA:  TxFlop4 RxFlop5 CLK1::CLK2   Location-4 987/1000 (98.7%)
+W_DATA:  TxFlop5 RxFlop4 CLK1::CLK2   Location-5 982/1000 (98.2%)
+W_DATA:  TxFlop6 RxFlop3 CLK1::CLK2   Location-6 988/1000 (98.8%)
+W_DATA:  TxFlop7 RxFlop2 CLK1::CLK2   Location-7 989/1000 (98.9%)
+W_DATA:  TxFlop8 RxFlop1 CLK1::CLK2   Location-8 983/1000 (98.3%)
+W_DATA:  TxFlop9 RxFlop0 CLK1::CLK2   Location-9 952/1000 (95.2%)
+'''
+    #for lineno, line in enumerate(junk.split("\n"), 1):
+    #    if line:
+    #        print(f'{lineno}: {line}')
+    lines0 = [line for line in junk.split('\n') if line]
+    for line in lines0:
+        print(line)
+
+    def hit_ratio(line):
+        pass
+
+    def get_lable(line):
+        pass
+
+    lines1 = sorted(lines0
