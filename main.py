@@ -13,6 +13,8 @@ import pprint
 import argparse
 import random
 import re
+import csv
+import pickle
 
 parser = argparse.ArgumentParser(
     prog="python main.py",
@@ -29,32 +31,55 @@ args = parser.parse_args() # args.infile(str)
 
 # read and write with lineno
 # ; usage: python main.py input.txt
-if True:
-    with open(args.infile, "r", encoding="utf8") as inFile:
-        for lineno, line in enumerate(inFile, 1):
+if False:
+    with open(args.infile, "r", encoding="utf8") as infile:
+        for lineno, line in enumerate(infile, 1):
             print("{}: {}".format(lineno, line), end='')
 
 
 # read
 if False:
-    inFile = open("input.txt", "r", encoding="utf8")
+    infile = open("input.txt", "r", encoding="utf8")
     regex = re.compile(r'\d+/\d+/\d+')
     while True:
-        line = inFile.readline()
+        line = infile.readline()
         if line and regex.match(line): # line.startswith('regex')
             print(line, end="")          # line.endswith('regex')
         else:
             break
-    inFile.close()
+    infile.close()
 
 # read
 if False:
-    with open("input.txt", "r", encoding="utf8") as inFile:
-        lines = (line.strip() for line in inFile)
+    with open("input.txt", "r", encoding="utf8") as infile:
+        lines = (line.strip() for line in infile)
         for line in lines:
             print(line)
 
 if False:
-    with open(args.infile, "r", encoding="utf8") as inFile:
-        for line in inFile:
+    with open(args.infile, "r", encoding="utf8") as infile:
+        for line in infile:
             fields = line.split(',')
+
+if False:
+    regex = re.compile(r'\d+-\d+-\d+')
+    with open(args.infile, "r", encoding="utf8") as infile:
+        for line in infile:
+            if line and regex.search(line):
+                line = line.rstrip()
+                print(line)
+
+if False:
+    inside = False # flag
+    with open(args.infile, "r", encoding="utf8") as infile:
+        for lineno, line in enumerate(infile, 1):
+            if line.startswith('# File'):
+                inside = True
+                continue
+            elif line.startswith('amount'):
+                inside = False
+                continue
+
+            if inside:
+                line = line.rstrip()
+                print(f'{lineno}: {line}')
