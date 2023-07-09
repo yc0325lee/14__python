@@ -2508,9 +2508,10 @@ if False:
 # -------------------------------------
 # chapter 5: data class builders
 # - data classes
-# ; collections.namedtuple
-# ; typing.NamedTuple
-# ; @dataclasses.dataclass
+# ; (1) classical data-holding class
+# ; (2) collections.namedtuple
+# ; (3) typing.NamedTuple
+# ; (4) @dataclasses.dataclass
 
 if False:
     # -------------------------------------
@@ -2602,6 +2603,15 @@ if False:
             we = 'E' if self.lon >= 0 else 'W' # west or east
             return f'{abs(self.lat):.1f}°{ns}, {abs(self.lon):.1f}°{we}'
 
+    print("Coordinate.__annotations__=", Coordinate.__annotations__)
+    print("Coordinate.__doc__=", Coordinate.__doc__)
+    print("Coordinate.lat=", Coordinate.lat) # -> returns getter!
+    print("Coordinate.lon=", Coordinate.lon) #
+    # Coordinate.__annotations__= {'lat': <class 'float'>, 'lon': <class 'float'>}
+    # Coordinate.__doc__= Coordinate(lat: float, lon: float)
+    # Coordinate.lat= _tuplegetter(0, 'Alias for field number 0')
+    # Coordinate.lon= _tuplegetter(1, 'Alias for field number 1')
+
     moscow = Coordinate(55.76, 37.62)
     print(moscow)
     # 55.8°N, 37.6°E
@@ -2623,18 +2633,29 @@ if False:
 if False:
     # -------------------------------------
     # - (4) using dataclasses.dataclass decorator
+    # ; frozen=True/False
+    #   -> controls get() & set() availabilities
     import dataclasses
 
     @dataclasses.dataclass(frozen=True)
     class Coordinate:
-        lat: float
-        lon: float
+        lat: float = 0.0
+        lon: float = 0.0 # defaut!
 
         def __str__(self):
             """print() uses this!"""
             ns = 'N' if self.lat >= 0 else 'S' # north or south
             we = 'E' if self.lon >= 0 else 'W' # west or east
             return f'{abs(self.lat):.1f}°{ns}, {abs(self.lon):.1f}°{we}'
+
+    print("Coordinate.__annotations__=", Coordinate.__annotations__)
+    print("Coordinate.__doc__=", Coordinate.__doc__)
+    print("Coordinate.lat=", Coordinate.lat) # -> error.
+    print("Coordinate.lon=", Coordinate.lon) #    not a class-member!
+    # Coordinate.__annotations__= {'lat': <class 'float'>, 'lon': <class 'float'>}
+    # Coordinate.__doc__= Coordinate(lat: float, lon: float)
+    # Coordinate.lat= 0.0
+    # Coordinate.lon= 0.0
 
     moscow = Coordinate(55.76, 37.62)
     print(moscow)
@@ -2795,7 +2816,7 @@ if False:
     # -> this works! but poor readability!
 
 
-if True:
+if False:
     # -------------------------------------
     # - typing.NamedTuple details
     # ; typed version of collections.namedtuple().
@@ -2860,12 +2881,24 @@ if True:
 
 if False:
     # -------------------------------------
+    # - @dataclasses.dataclass(
+    #       *, init=True, repr=True, eq=True, order=False, unsafe_hash=False,
+    #       frozen=False, match_args=True, kw_only=False, slots=False,
+    #       weakref_slot=False
+    #   )
+    # ; this function is a decorator that is used to add generated special
+    #   methods to classes
+    # ; keyword-argument only! <--- '*'
+    #
     # - @dataclasses.dataclass decorator details
     # ; this module provides a decorator and functions for automatically
     #   adding generated special methods such as __init__() and __repr__() to
     #   user-defined classes.
     # ; no type checking at runtime
-    # ; eq=True & frozen=True -> __hash__, hashable
+    # ; mutable by default (frozen=False)
+    # ; eq=True & frozen=True -> __hash__ generated, hashable
+    #   -> no setter will be available
+    # ; can implement user-defined __init__, __repr__, __eq__
     import dataclasses
 
     @dataclasses.dataclass(frozen=True) # frozen= True(immutable) or False(mutable)
@@ -2883,11 +2916,10 @@ if False:
     # class attributes
     print(Coordinate.__doc__) # custom docstring
     print(Coordinate.__annotations__)
-    #print(Coordinate.lat) -> no
-    #print(Coordinate.lon) -> no
+    #print(Coordinate.lat) -> not exists as class attribues
+    #print(Coordinate.lon) -> not exists as class attribues
     # Coordinate(lat: float, lon: float)
     # {'lat': <class 'float'>, 'lon': <class 'float'>}
-
 
     moscow = Coordinate(55.76, 37.62)
     print(moscow)
@@ -2905,13 +2937,47 @@ if False:
 
 
 if False:
+    # -------------------------------------
+    # - default values must be immutable!
+    # ; or any factory pattern
     import dataclasses
     @dataclasses.dataclass
     class ClubMember:
         name: str
+        #guests: list = [] # error! <- mutable
+        #guests: list = dataclasses.field(default_factory=list)
         guests: list[str] = dataclasses.field(default_factory=list)
+        #       ---------                                     ----
+        #       list of string                                function
+        athlete: bool = dataclasses.field(default=False, repr=True)
 
     cm0 = ClubMember("aaa", [0, 1, 2])
     cm1 = ClubMember("bbb", ['a', 'b', 'c'])
     print(cm0)
     print(cm1)
+    # ClubMember(name='aaa', guests=[0, 1, 2]) # 'str' is just a type hint!
+    # ClubMember(name='bbb', guests=['a', 'b', 'c'])
+
+
+if True:
+    # -------------------------------------
+    # - __post_init__ method for HackerClubMember
+    # ;
+    import dataclasses
+    @dataclasses.dataclass
+    class ClubMember:
+        name: str
+        #guests: list = [] # error! <- mutable
+        #guests: list = dataclasses.field(default_factory=list)
+        guests: list[str] = dataclasses.field(default_factory=list)
+        #       ---------                                     ----
+        #       list of string                                function
+
+
+    @dataclasses.dataclass
+    class HackerClubMember(ClubMember):
+        all_handles = set()
+        handle: str = ''
+
+        def __post_init__(self):
+            cls = s

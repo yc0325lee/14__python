@@ -31,5 +31,5 @@ if False:
     # ; this function is a decorator that is used to add generated special
     #   methods to classes
     # ; keyword-argument only! <--- '*'
-    # ; eq=True & frozen=True -> __hash__, hashable
+    # ; eq=True & frozen=True -> __hash__ generated, hashable
     pass

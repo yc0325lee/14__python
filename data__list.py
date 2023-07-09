@@ -198,3 +198,13 @@ if False:
     # even= [0, 2, 4, 6, 8]
     # odd= [1, 3, 5, 7, 9]
     # cont[:-1]= [0, 1, 2, 3, 4, 5, 6, 7, 8]
+
+if False:
+    # list of string
+    # ; 'str' is just a type hint!
+    cont = list[str](); print(cont)
+    cont.append(0); print(cont)
+    cont.append(1); print(cont)
+    cont.append(2); print(cont)
+    cont.append(3); print(cont)
+    cont.append(4); print(cont)
